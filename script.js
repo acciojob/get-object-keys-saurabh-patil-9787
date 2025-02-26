@@ -1,14 +1,11 @@
-//your JS code here. If required.
 const student = {
 	name:"saurabh",
 	age:29,
 	city:"HU",
-	
+	getKeys: function() {
+		return Object.keys(this);
+	}
 }
 
-function getKeys(obj) {
-	return Object.keys(obj)
-}
-
-const keys = getKeys(student)
+const keys = student.getKeys()
 console.log(keys)
