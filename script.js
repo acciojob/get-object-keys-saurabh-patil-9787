@@ -1,21 +1,27 @@
-// Create the student object with a name property
-const student = {
-    name: "John Doe"
-};
+() => {
+    cy.visit(baseUrl + "/main.html"); // Always check this visit is set to baseUrl + "/main.html"
+    
+    cy.document().then(doc => {
+        const script = doc.querySelector('script[src="./script.js"]');
+        const scriptUrl = script.getAttribute("src");
 
-// Another student object with multiple properties
-const student2 = {
-    name: "Alice",
-    age: 25,
-    city: "New York"
-};
+        cy.readFile(scriptUrl).then(jsCode => {
+            // Execute the JavaScript code dynamically using eval
+            eval(jsCode);
 
-// Function to get the keys of an object
-const displayKeys = document.getElementById('keys')
-function getKeys(obj) {
-    return Object.keys(obj);
+            // Define the object with the getKeys method
+            const myObj = {
+                name: "John",
+                age: 30,
+                city: "New York",
+                getKeys: function() {
+                    return Object.keys(this);
+                }
+            };
+
+            // Test the getKeys method
+            const keys = myObj.getKeys();
+            expect(keys).to.deep.equal(["name", "age", "city"]);
+        });
+    });
 }
-// displayKeys.innerText = getKeys(student) +" " + getKeys(student2)
-// Testing the function
-console.log(getKeys(student));  // Output: ["name"]
-console.log(getKeys(student2)); // Output: ["name", "age", "city"]
